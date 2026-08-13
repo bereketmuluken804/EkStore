@@ -13,7 +13,7 @@ const app = express();
 const env = getEnv();
 const rawJson = express.raw({ type: "application/json", limit: "1mb" });
 
-// don't parse the webhook event data, it should be the ra              w format
+// don't parse the webhook event data, it should be the raw format
 app.post("/webhook/clerk", rawJson, (req, res) => {
 	void clerkWebhookHandler(req, res);
 });
@@ -21,7 +21,11 @@ app.post("/webhook/clerk", rawJson, (req, res) => {
 app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
-
+app.get("/health", (req, res) => {
+  res.json({ok: true})
+}
+  
+)
 const publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {
 	app.use(express.static(publicDir));

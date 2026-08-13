@@ -10,7 +10,7 @@ import fs from "fs";
 import keepAlive from "./lib/cron";
 import meRouter from "./routes/meRouter";
 import productRouter from "./routes/productRouter";
-
+import streamRouter from "./routes/streamRouter";
 
 const app = express();
 const env = getEnv();
@@ -26,11 +26,12 @@ app.use(cors());
 app.use(clerkMiddleware());
 
 app.get("/health", (_, res) => {
-  res.json({ ok: true });
+	res.json({ ok: true });
 });
 
 app.use("/api/me", meRouter);
 app.use("/api/products", productRouter);
+app.use("/api/stream", streamRouter);
 // serving the frontend
 const publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {

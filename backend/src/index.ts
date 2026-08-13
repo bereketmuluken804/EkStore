@@ -8,6 +8,9 @@ import { getEnv } from "./lib/env";
 import path from "path";
 import fs from "fs";
 import keepAlive from "./lib/cron";
+import meRouter from "./routes/meRouter";
+import productRouter from "./routes/productRouter";
+
 
 const app = express();
 const env = getEnv();
@@ -25,6 +28,10 @@ app.use(clerkMiddleware());
 app.get("/health", (_, res) => {
   res.json({ ok: true });
 });
+
+app.use("/api/me", meRouter);
+app.use("/api/products", productRouter);
+// serving the frontend
 const publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {
 	app.use(express.static(publicDir));

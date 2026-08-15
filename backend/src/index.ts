@@ -13,6 +13,11 @@ import productRouter from "./routes/productRouter";
 import streamRouter from "./routes/streamRouter";
 import checkoutRouter from "./routes/checkoutRouter";
 import { polarWebhookHandler } from "./webhooks/polar";
+import * as Sentry from "@sentry/node";
+import { unknown } from "zod";
+import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
+
+
 const app = express();
 const env = getEnv();
 const rawJson = express.raw({ type: "application/json", limit: "1mb" });
@@ -30,10 +35,12 @@ app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
 
+//after clerk because we use getAuth in side this
+app.use(sentryClerkUserMiddleware);
 app.get("/health", (_, res) => {
 	res.json({ ok: true });
 });
-
+ 
 app.use("/api/me", meRouter);
 app.use("/api/products", productRouter);
 app.use("/api/stream", streamRouter);
@@ -58,7 +65,19 @@ if (fs.existsSync(publicDir)) {
 		res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
 	});
 }
+// sentry will be attached to the respons object
+Sentry.setupExpressErrorHandler(app);
 
+app.use(
+  (_err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    const sentryId = (res as express.Response & { sentry?: string }).sentry;
+
+    res.status(500).json({
+      error: "Internal server error",
+      ...(sentryId !== undefined && { sentryId }),
+    });
+  },
+);
 app.listen(env.PORT, async () => {
 	console.log(`listening port http://localhost:${env.PORT}`);
 	if (env.NODE_ENV === "production") {

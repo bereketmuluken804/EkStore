@@ -44,7 +44,7 @@ export async function createStreamToken(
 		);
 
 		const image = clerkUser.imageUrl || undefined;
-		const sid = streamUserId(userId); 
+		const sid = streamUserId(userId);  
 
 		await server.upsertUser({ id: sid, name, image });
 

@@ -13,7 +13,7 @@ import productRouter from "./routes/productRouter";
 import streamRouter from "./routes/streamRouter";
 import checkoutRouter from "./routes/checkoutRouter";
 import adminRouter from "./routes/adminRouter";
-
+import orderRouter from "./routes/orderRouter";
 import { polarWebhookHandler } from "./webhooks/polar";
 import * as Sentry from "@sentry/node";
 import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
@@ -47,7 +47,10 @@ app.use("/api/products", productRouter);
 app.use("/api/stream", streamRouter);
 app.use("/api/checkout", checkoutRouter);
 app.use("/api/admin", adminRouter);
-// serving the frontend
+app.use("/api/orders", orderRouter);
+
+
+// serving the frontend 
 const publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {
 	app.use(express.static(publicDir));
@@ -66,7 +69,7 @@ if (fs.existsSync(publicDir)) {
 		res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
 	});
 }
-// sentry will be attached to the respons object
+// sentry will be attached to the response  object
 Sentry.setupExpressErrorHandler(app);
 
 app.use(

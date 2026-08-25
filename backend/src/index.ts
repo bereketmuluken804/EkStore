@@ -52,8 +52,8 @@ app.use("/api/orders", orderRouter);
 
 // serving the frontend 
 const publicDir = path.join(process.cwd(), "public");
+app.use(express.static(publicDir));
 if (fs.existsSync(publicDir)) {
-	app.use(express.static(publicDir));
 
 	app.get("/{*any}", (req, res, next) => {
 		if (req.method !== "GET" && req.method !== "HEAD") {

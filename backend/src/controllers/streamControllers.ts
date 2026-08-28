@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { getAuth, clerkClient } from "@clerk/express";
-import { getLocalUser } from "../lib/users.js";
+import { getOrCreateLocalUser } from "../lib/users.js";
 import {
 	getStreamChatServer,
 	streamChatDisplayName,
@@ -22,9 +22,9 @@ export async function createStreamToken(
 			return;
 		}
 
-		const localUser = await getLocalUser(userId);
+		const localUser = await getOrCreateLocalUser(userId);
 		if (!localUser) {
-			res.status(503).json({ error: "Account not synced yet" });
+			res.status(500).json({ error: "Failed to sync account" });
 			return;
 		}
 

@@ -1,6 +1,6 @@
 import { getAuth } from "@clerk/express";
 import type { NextFunction, Response, Request } from "express";
-import { getLocalUser } from "../lib/users";
+import { getOrCreateLocalUser } from "../lib/users";
 import { isStaff } from "../lib/roles";
 import { db } from "../db";
 import { orderItems, orders, products, users } from "../db/schema";
@@ -18,9 +18,9 @@ export async function listOrders(req: Request, res: Response, next: NextFunction
       return;
     }
 
-    const localUser = await getLocalUser(userId);
+    const localUser = await getOrCreateLocalUser(userId);
     if (!localUser) {
-      res.status(503).json({ error: "Account not synced yet" });
+      res.status(500).json({ error: "Failed to sync account" });
       return;
     }
 
@@ -80,9 +80,9 @@ export async function getOrder(req: Request, res: Response, next: NextFunction) 
       return;
     }
 
-    const localUser = await getLocalUser(userId);
+    const localUser = await getOrCreateLocalUser(userId);
     if (!localUser) {
-      res.status(503).json({ error: "Account not synced yet" });
+      res.status(500).json({ error: "Failed to sync account" });
       return;
     }
 
@@ -130,9 +130,9 @@ export async function createStreamChannel(req: Request, res: Response, next: Nex
 
     const server = getStreamChatServer(env);
 
-    const localUser = await getLocalUser(userId);
+    const localUser = await getOrCreateLocalUser(userId);
     if (!localUser) {
-      res.status(503).json({ error: "Account not synced yet" });
+      res.status(500).json({ error: "Failed to sync account" });
       return;
     }
 
@@ -191,9 +191,9 @@ export async function createVideoInvite(req: Request, res: Response, next: NextF
 
     const server = getStreamChatServer(env);
 
-    const localUser = await getLocalUser(userId);
+    const localUser = await getOrCreateLocalUser(userId);
     if (!localUser) {
-      res.status(503).json({ error: "Account not synced yet" });
+      res.status(500).json({ error: "Failed to sync account" });
       return;
     }
 

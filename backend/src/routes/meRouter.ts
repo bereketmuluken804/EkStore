@@ -1,7 +1,6 @@
-import { getAuth, clerkClient } from "@clerk/express";
+import { getAuth } from "@clerk/express";
 import { Router } from "express";
-import { getLocalUser } from "../lib/users";
-import { parseRole } from "../lib/roles";
+import { getOrCreateLocalUser } from "../lib/users";
 
 const router = Router();
 
@@ -13,25 +12,10 @@ router.get("/", async (req, res, next) => {
       return;
     }
 
-    let user = await getLocalUser(userId);
-
+    const user = await getOrCreateLocalUser(userId);
     if (!user) {
-      const clerkUser = await clerkClient.users.getUser(userId);
-      const email =
-        clerkUser.emailAddresses?.find((e) => e.id === clerkUser.primaryEmailAddressId)
-          ?.emailAddress ?? "";
-      const displayName =
-        [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || null;
-
-      user = {
-        id: clerkUser.id,
-        clerkUserId: clerkUser.id,
-        email,
-        displayName,
-        role: parseRole(clerkUser.publicMetadata?.role),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      res.status(500).json({ error: "Failed to sync account" });
+      return;
     }
 
     res.json({ user });

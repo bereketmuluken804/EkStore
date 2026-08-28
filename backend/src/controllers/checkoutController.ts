@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { getEnv } from "../lib/env";
 import z from "zod";
 import { getAuth } from "@clerk/express";
-import { getLocalUser } from "../lib/users";
+import { getOrCreateLocalUser } from "../lib/users";
 import { db } from "../db";
 import { CheckoutSessionLine, checkoutSessions, products } from "../db/schema";
 import { and, eq, inArray } from "drizzle-orm";
@@ -42,9 +42,9 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
       return;
     }
 
-    const localUser = await getLocalUser(userId);
+    const localUser = await getOrCreateLocalUser(userId);
     if (!localUser) {
-      res.status(503).json({ error: "Account not synced yet" });
+      res.status(500).json({ error: "Failed to sync account" });
       return;
     }
 

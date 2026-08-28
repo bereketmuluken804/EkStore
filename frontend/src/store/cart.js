@@ -9,7 +9,7 @@ export const UseCart = create(
 			addItem(productId, qty = 1) {
 				const items = [...get().items];
 				const i = items.findIndex(
-					(item) => item.productId === productId,
+					(item) => item.productId === productId,			
 				);
 				if (i >= 0) {
 					items[i] = {
@@ -22,7 +22,7 @@ export const UseCart = create(
 				set({ items });
 			},
 
-			remove(productId) {
+			removeItem(productId) {
 				set({
 					items: get().items.filter(
 						(item) => item.productId !== productId,

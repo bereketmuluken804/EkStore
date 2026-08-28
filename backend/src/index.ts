@@ -61,7 +61,7 @@ if (fs.existsSync(publicDir)) {
 			return;
 		}
 
-		if (req.path.startsWith("/api") || req.path.startsWith("/webhooks")) {
+		if (req.path.startsWith("/api") || req.path.startsWith("/webhook")) {
 			next();
 			return;
 		}
@@ -73,7 +73,8 @@ if (fs.existsSync(publicDir)) {
 Sentry.setupExpressErrorHandler(app);
 
 app.use(
-  (_err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  (err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error("Unhandled error:", err);
     const sentryId = (res as express.Response & { sentry?: string }).sentry;
 
     res.status(500).json({

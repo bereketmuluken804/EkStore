@@ -120,6 +120,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
 
     res.json({ checkoutUrl: checkout.url });
   } catch (e) {
+    console.error("Checkout error:", e);
     next(e);
   }
 }

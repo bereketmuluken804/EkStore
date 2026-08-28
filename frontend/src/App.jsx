@@ -10,6 +10,7 @@ import Layout from "./components/Layout";
 import { Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
+import CheckoutReturnPage from "./pages/CheckoutReturnPage";
 
 function App() {
 	const { isLoaded } = useAuth();
@@ -20,6 +21,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/cart" element={<CartPage />} />
+					<Route path="/checkout/return" element={<CheckoutReturnPage />} />
 				</Routes>
 			</Layout>
 		</div>

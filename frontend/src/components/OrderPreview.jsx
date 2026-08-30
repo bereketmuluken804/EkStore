@@ -73,7 +73,7 @@ export function OrderPreview({ items, size = "md" }) {
               decoding="async"
             />
           ) : (
-            <div className="flex h-full min-h-[2rem] w-full items-center justify-center">
+            <div className="flex h-full min-h-8 w-full items-center justify-center">
               <PackageIcon className="size-4 text-base-content/30" aria-hidden />
             </div>
           )}

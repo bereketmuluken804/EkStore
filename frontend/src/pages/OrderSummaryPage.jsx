@@ -47,7 +47,7 @@ function OrderSummaryPage() {
                 <div className="min-w-0 flex-1">
                   <Link
                     to={`/product/${row.product.slug}`}
-                    className="link link-hover text-lg font-semibold leading-snug text-base-content"
+                    className="link link-hover text-lg font-semibold leading-snug text-base-content hover:text-primary"
                   >
                     {row.product.name}
                   </Link>

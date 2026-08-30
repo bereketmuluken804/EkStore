@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import { CheckCircleIcon, ShoppingCartIcon } from "lucide-react";
+import { CheckCircleIcon, PackageIcon, ShoppingCartIcon } from "lucide-react";
 import { UseCart } from "../store/cart";
 
 export default function CheckoutReturnPage() {
@@ -25,8 +25,8 @@ export default function CheckoutReturnPage() {
           Checkout ID: {checkoutId}
         </p>
       )}
-      <Link to="/" className="btn btn-primary gap-2">
-        <ShoppingCartIcon className="size-4" aria-hidden />
+      <Link to="/orders" className="btn btn-primary gap-2">
+        <PackageIcon className="size-4" aria-hidden />
         Continue shopping
       </Link>
     </div>

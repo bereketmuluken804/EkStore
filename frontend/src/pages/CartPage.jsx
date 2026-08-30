@@ -18,6 +18,7 @@ import { Show, SignInButton } from "@clerk/react";
 function CartPage() {
   const {
     checkout,
+    checkoutError,
     checkoutLoading,
     items,
     lines,
@@ -131,6 +132,15 @@ function CartPage() {
                 {formatPrice(subtotal, lines[0]?.product?.currency ?? "usd")}
               </span>
             </div>
+
+            {checkoutError ? (
+              <p
+                role="alert"
+                className="mt-6 border border-error/30 bg-error/10 px-4 py-3 text-center text-sm text-error"
+              >
+                {checkoutError}
+              </p>
+            ) : null}
 
             <Show when="signed-in">
               <button

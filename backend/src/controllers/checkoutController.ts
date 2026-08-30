@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { getEnv } from "../lib/env";
 import z from "zod";
 import { getAuth } from "@clerk/express";
-import { getOrCreateLocalUser } from "../lib/users";
+import { getLocalUser } from "../lib/users";
 import { db } from "../db";
 import { CheckoutSessionLine, checkoutSessions, products } from "../db/schema";
 import { and, eq, inArray } from "drizzle-orm";
@@ -42,12 +42,12 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
       return;
     }
 
-    const localUser = await getOrCreateLocalUser(userId);
+    const localUser = await getLocalUser(userId);
     if (!localUser) {
-      res.status(500).json({ error: "Failed to sync account" });
+      res.status(503).json({ error: "Account not synced yet" });
       return;
     }
-
+    console.log(localUser)
     const ids = parsed.data.items.map((i) => i.productId);
 
     // load every cart product that exists, is active, and matches the IDs we asked for.
@@ -120,7 +120,6 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
 
     res.json({ checkoutUrl: checkout.url });
   } catch (e) {
-    console.error("Checkout error:", e);
     next(e);
   }
 }

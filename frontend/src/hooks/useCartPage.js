@@ -7,6 +7,7 @@ import { useState } from "react";
 export default function useCartPage() {
   const { getToken } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(null);
 
   const items = UseCart((s) => s.items);
   const setQty = UseCart((s) => s.setQty);
@@ -36,20 +37,25 @@ export default function useCartPage() {
 
   async function checkout() {
     setCheckoutLoading(true);
+    setCheckoutError(null);
 
     const body = {
       items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
     };
 
-    const res = await apiFetch("/api/checkout", {
-      getToken,
-      method: "POST",
-      body,
-    });
+    try {
+      const res = await apiFetch("/api/checkout", {
+        getToken,
+        method: "POST",
+        body,
+      });
 
-    if (res?.checkoutUrl) {
-      window.location.href = res.checkoutUrl;
-      return;
+      if (res?.checkoutUrl) {
+        window.location.href = res.checkoutUrl;
+        return;
+      }
+    } catch {
+      setCheckoutError("couldn't process the request now, try again later");
     }
 
     setCheckoutLoading(false);
@@ -65,5 +71,6 @@ export default function useCartPage() {
     subtotal,
     checkout,
     checkoutLoading,
+    checkoutError,
   };
 }

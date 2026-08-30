@@ -47,7 +47,6 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
       res.status(503).json({ error: "Account not synced yet" });
       return;
     }
-    console.log(localUser)
     const ids = parsed.data.items.map((i) => i.productId);
 
     // load every cart product that exists, is active, and matches the IDs we asked for.

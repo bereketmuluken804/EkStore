@@ -8,7 +8,7 @@ import { isInstanceOf } from "@sentry/core";
 export function useAdminProductsPage() {
 	const { getToken, isSignedIn } = useAuth();
 	const queryClient = useQueryClient();
-	const [modalOpen, setModalOpen] = useState(true);
+	const [modalOpen, setModalOpen] = useState(false);
 	const [editing, setEditing] = useState(null);
 
 	const { data: meData } = useQuery({

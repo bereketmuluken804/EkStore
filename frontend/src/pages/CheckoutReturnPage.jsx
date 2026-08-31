@@ -27,7 +27,7 @@ export default function CheckoutReturnPage() {
       )}
       <Link to="/orders" className="btn btn-primary gap-2">
         <PackageIcon className="size-4" aria-hidden />
-        Continue shopping
+        checkout orders
       </Link>
     </div>
   );

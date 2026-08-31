@@ -16,7 +16,8 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import OrderChatPage from "./pages/OrderChatPage";
 import OrderDetailPage from "./pages/OrderDetailPage";
 import OrderSummaryPage from "./pages/OrderSummaryPage";
-
+import OrderVideoPage from "./pages/OrderVideoPage";
+import AdminProductsPage from "./pages/AdminProductsPage";
 function App() {
 	const { isLoaded, isSignedIn } = useAuth();
 	if (!isLoaded) return <PageLoader />;
@@ -40,11 +41,24 @@ function App() {
 						path="/checkout/return"
 						element={<CheckoutReturnPage />}
 					/>
+					<Route
+					path="/orders/:id/call"
+					element={
+						isSignedIn ? (
+							<OrderVideoPage />
+						) : (
+							<Navigate to={"/"} replace />
+						)
+					}
+				/>
+					<Route path="/admin" element={isSignedIn? <AdminProductsPage /> : <Navigate to="/" replace /> }/>
 					<Route path="/orders/:id" element={<OrderDetailPage />}>
 						<Route index element={<OrderSummaryPage />} />
 						<Route path="chat" element={<OrderChatPage />} />
 					</Route>
 				</Routes>
+
+				
 			</Layout>
 		</div>
 	);

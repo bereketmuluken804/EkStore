@@ -53,7 +53,7 @@ export function useAdminProductsPage() {
 
 	const deleteMutation = useMutation({
 		mutationFn: (productId) => {
-			return apiFetch(`api/admin/products/${productId}`, {
+			return apiFetch(`/api/admin/products/${productId}`, {
 				getToken,
 				method: "DELETE",
 			});
@@ -64,22 +64,22 @@ export function useAdminProductsPage() {
 			queryClient.invalidateQueries({ queryKey: ["product-categories"] });
 		},
 
-    onError: (err) => {
-      console.log(err);
-      window.alert(err instanceof Error ? err.message : "Delete failed");
-    }
+		onError: (err) => {
+			console.log(err);
+			window.alert(err instanceof Error ? err.message : "Delete failed");
+		},
 	});
-  return {
-    getToken,
-    isSignedIn,
-    meData,
-    modalOpen,
-    setModalOpen,
-    editing,
-    setEditing,
-    products: data?.products ?? [],
-    isLoading,
-    saveMutation,
-    deleteMutation,
-  };
+	return {
+		getToken,
+		isSignedIn,
+		meData,
+		modalOpen,
+		setModalOpen,
+		editing,
+		setEditing,
+		products: data?.products ?? [],
+		isLoading,
+		saveMutation,
+		deleteMutation,
+	};
 }

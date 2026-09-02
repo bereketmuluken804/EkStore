@@ -1,7 +1,7 @@
 import { Show, SignInButton, useAuth, UserButton } from "@clerk/react";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "../lib/api";
-import { Link } from "react-router";
+import { Link , NavLink} from "react-router";
 
 import {
 	LogInIcon,
@@ -42,40 +42,52 @@ const Navbar = () => {
 				</div>
 
 				<nav className="flex items-center gap-1 md:gap-1.5">
-					<Link to="/" className="btn btn-ghost gap-2 font-medium">
+					<NavLink to="/" className={({isActive})=> isActive ? "btn btn-ghost gap-2 font-medium text-primary" : "btn btn-ghost gap-2 font-medium"}>
 						<ShoppingBagIcon
 							className="size-6 opacity-90"
 							aria-hidden
 						/>
 						<span className="hidden sm:inline">Shop</span>
-					</Link>
+					</NavLink>
 
 					<Show when={"signed-in"}>
-						<Link
+						<NavLink
 							to="/orders"
-							className="btn btn-ghost gap-2 font-medium"
+							className={({ isActive }) =>
+								isActive
+									? "btn btn-ghost gap-2 font-medium text-primary"
+									: "btn btn-ghost gap-2 font-medium"
+							}
 						>
 							<PackageIcon
 								className="size-6 opacity-90"
 								aria-hidden
 							/>
 							<span className="hidden sm:inline">Orders</span>
-						</Link>
+						</NavLink>
 
 						{role === "admin" ? (
-							<Link
+							<NavLink
 								to="/admin"
-								className="btn btn-ghost gap-2 font-medium text-secondary"
+								className={({ isActive }) =>
+									isActive
+										? "btn btn-ghost gap-2 font-medium text-primary"
+										: "btn btn-ghost gap-2 font-medium"
+								}
 							>
 								<SettingsIcon className="size-6" aria-hidden />
 								<span className="hidden sm:inline">Admin</span>
-							</Link>
+							</NavLink>
 						) : null}
 					</Show>
 
-					<Link
+					<NavLink
 						to="/cart"
-						className="btn btn-ghost gap-2 font-medium indicator"
+						className={({ isActive }) =>
+							isActive
+								? "btn btn-ghost gap-2 font-medium indicator text-primary"
+								: "btn btn-ghost gap-2 font-medium indicator"
+						}
 						aria-label={
 							cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"
 						}
@@ -90,7 +102,7 @@ const Navbar = () => {
 							aria-hidden
 						/>
 						<span className="hidden sm:inline">Cart</span>
-					</Link>
+					</NavLink>
 
 					<Show when={"signed-out"}>
 						<SignInButton mode="modal">

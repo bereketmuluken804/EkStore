@@ -27,10 +27,10 @@ const HomePage = () => {
 
 			<div className="flex flex-col gap-4  mb-6 sm:flex-row sm:items-end sm:justify-between">
 				<div>
-					<h2 className="text-2xl font-bold text-base-content md:text-2xl uppercase font-mono">Catelog</h2>
+					<h2 id="catalog" className="text-2xl font-bold text-base-content md:text-2xl uppercase font-mono">Catelog</h2>
 				</div>
 
-				<div>
+				<div className="flex flex-wrap gap-2">
 					<button
 						type="button"
 						className={`btn btn-sm ${!categoryFilter ? "btn-primary" : "btn-ghost border border-base-300"}`}
@@ -41,7 +41,7 @@ const HomePage = () => {
 
 					{categoryChipsLoading
 						? [1, 2, 3, 4].map((i) => (
-								<div key={i} className="" />
+								<div key={i} className="skeleton h-8 w-20 rounded-lg" />
 							))
 						: categories.map((c) => (
 								<button
